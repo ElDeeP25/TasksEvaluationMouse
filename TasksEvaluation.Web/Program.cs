@@ -97,7 +97,6 @@ namespace TaskEvaluation.Web
                 pattern: "{controller=Account}/{action=Register" +
                 "}/{id?}");
 
-            app.MapRazorPages();
             app.Run();
            
         }
