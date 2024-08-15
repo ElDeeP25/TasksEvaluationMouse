@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\imgs\**" />
+    <Compile Remove="wwwroot\Tasks\**" />
+    <Content Remove="wwwroot\imgs\**" />
+    <Content Remove="wwwroot\Tasks\**" />
+    <EmbeddedResource Remove="wwwroot\imgs\**" />
+    <EmbeddedResource Remove="wwwroot\Tasks\**" />
+    <None Remove="wwwroot\imgs\**" />
+    <None Remove="wwwroot\Tasks\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Shared\_Authcshtml.cshtml" />
   </ItemGroup>
 
@@ -14,7 +25,7 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="FluentValidation" Version="7.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -49,11 +60,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\imgs\" />
-    <Folder Include="wwwroot\Tasks\" />
   </ItemGroup>
 
 </Project>
