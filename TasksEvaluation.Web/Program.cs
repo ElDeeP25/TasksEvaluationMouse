@@ -1,18 +1,13 @@
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using TasksEvaluation.Infrastructure.Data;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using TasksEvaluation.Core.Interfaces.IRepositories;
 using TasksEvaluation.Core.Interfaces.IServices;
-using TasksEvaluation.Infrastructure.Services;
-using TasksEvaluation.Core.Mapper.Mapper;
-using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
-using AutoMapper;
-using FluentAssertions.Common;
-using TasksEvaluation.Core.DTOs;
-using TasksEvaluation.Core.Entities.Business;
 using TasksEvaluation.Core.Mapper;
+using TasksEvaluation.Infrastructure.Data;
+using TasksEvaluation.Infrastructure.Repositories;
+using TasksEvaluation.Infrastructure.Services;
 using TasksEvaluation.Web.Helper;
 
 namespace TaskEvaluation.Web
@@ -27,62 +22,17 @@ namespace TaskEvaluation.Web
             builder.Services.AddControllersWithViews();
 
 
-           // builder.Services.AddTransient<IEmailSender, EmailSettings>();
+            // builder.Services.AddTransient<IEmailSender, EmailSettings>();
 
-            builder.Services.AddAutoMapper(m=> m.AddProfile(new Studentmapper()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new Coursemapper()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new Assignmentmapper()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new EvaluationGrademapper()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new Groupmapper()));
-            builder.Services.AddAutoMapper(m => m.AddProfile(new Solutionmapper()));
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfile()));
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddTransient<IAssignmentService, AssignmentService>();
+            builder.Services.AddTransient<ISolutionService, SolutionService>();
+            builder.Services.AddTransient<IStudentService, StudentService>();
+            builder.Services.AddTransient<ICourseService, CourseService>();
+            builder.Services.AddTransient<IGroupService, GroupService>();
 
-            #region Mapper
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Student, StudentDTO>();
-                cfg.CreateMap<StudentDTO, Student>();
 
-                cfg.CreateMap<Assignment, AssignmentDTO>();
-                cfg.CreateMap<AssignmentDTO, Assignment>();
-
-                cfg.CreateMap<Course, CourseDTO>();
-                cfg.CreateMap<CourseDTO, Course>();
-
-                cfg.CreateMap<EvaluationGrade, EvaluationGradeDTO>();
-                cfg.CreateMap<EvaluationGradeDTO, EvaluationGrade>();
-
-                cfg.CreateMap<Group, GroupDTO>();
-                cfg.CreateMap<GroupDTO, Group>();
-
-                cfg.CreateMap<Solution, SolutionDTO>();
-                cfg.CreateMap<SolutionDTO, Solution>();
-
-            });
-
-            IMapper mapper = configuration.CreateMapper();
-
-            // Register the IMapperService implementation with your dependency injection container
-
-          builder.Services.AddSingleton<IBaseMapper<Student, StudentDTO>>(new BaseMapper<Student, StudentDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<StudentDTO, Student>>(new BaseMapper<StudentDTO, Student>(mapper));
-
-            builder.Services.AddSingleton<IBaseMapper<Assignment, AssignmentDTO>>(new BaseMapper<Assignment, AssignmentDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<AssignmentDTO, Assignment>>(new BaseMapper<AssignmentDTO, Assignment>(mapper));
-
-            builder.Services.AddSingleton<IBaseMapper<Course, CourseDTO>>(new
-                BaseMapper<Course, CourseDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<CourseDTO, Course>>(new BaseMapper<CourseDTO, Course>(mapper));
-
-            builder.Services.AddSingleton<IBaseMapper<EvaluationGrade, EvaluationGradeDTO>>(new BaseMapper<EvaluationGrade, EvaluationGradeDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<EvaluationGradeDTO, EvaluationGrade>>(new BaseMapper<EvaluationGradeDTO, EvaluationGrade>(mapper));
-
-            builder.Services.AddSingleton<IBaseMapper<Group, GroupDTO>>(new BaseMapper<Group, GroupDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<GroupDTO, Group>>(new BaseMapper<GroupDTO, Group>(mapper));
-
-            builder.Services.AddSingleton<IBaseMapper<Solution, SolutionDTO>>(new BaseMapper<Solution, SolutionDTO>(mapper));
-            builder.Services.AddSingleton<IBaseMapper<SolutionDTO, Solution>>(new BaseMapper<SolutionDTO, Solution>(mapper));
-
-            #endregion
             builder.Services.AddDbContext<ApplicationDbContext>(option =>
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
              

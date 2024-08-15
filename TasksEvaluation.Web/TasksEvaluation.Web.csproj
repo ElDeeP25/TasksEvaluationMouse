@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TasksEvaluation.Core\TasksEvaluation.Core.csproj" />
     <ProjectReference Include="..\TasksEvaluation.Infrastructure\TasksEvaluation.Infrastructure.csproj" />
   </ItemGroup>
 
